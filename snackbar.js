@@ -30,6 +30,8 @@ iqwerty.snackbar = (function() {
 				"bottom": "0",
 				"left": "0",
 				"right": "0",
+
+				"max-width": "600px",
 				
 				"background": "#212121",
 				"color": "#e0e0e0",
@@ -45,7 +47,8 @@ iqwerty.snackbar = (function() {
 				"color": "#f48fb1",
 				"letter-spacing": "1px",
 				"text-transform": "uppercase",
-				"margin": "0 1em"
+				"margin": "0 1em",
+				"cursor": "pointer"
 			}
 		},
 
