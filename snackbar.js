@@ -2,7 +2,7 @@
 
   "snackbar.js"
 
-  Created by Michael Cheng on 06/19/2015 16:37
+  Created by Michael Cheng on 06/22/2015 09:40
             http://michaelcheng.us/
             michael@michaelcheng.us
             --All Rights Reserved--
@@ -15,13 +15,29 @@ var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
 	function Snackbar(text, cta, action, options) {
-		var options = options == undefined ? {} : options;
-		options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, options);
+		options = Snackbar.prototype.mergeOptions(options, Snackbar.prototype.DEFAULT_SETTINGS);
 
-		Snackbar.prototype.show(text, cta, action, options);
+		/**
+		 * The text to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
+		 * @type {String}
+		 */
+		var _text = Snackbar.prototype.configureAction(text, cta, action, options.style.cta);
+		iqwerty.toast.Toast.call(this, _text, options);
+
+
+		// free the _text
+		_text = null;
 	};
 
-	Snackbar.prototype.SNACKBAR_ANIMATION_SPEED = 400;
+	var _snackbarStage = null;
+	function getSnackbarStage() {
+		return _snackbarStage;
+	};
+	function setSnackbarStage(snackbarStage) {
+		_snackbarStage = snackbarStage;
+	};
+
+	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
 
 	Snackbar.prototype.DEFAULT_SETTINGS = {
 		style: {
@@ -31,10 +47,14 @@ iqwerty.snackbar = (function() {
 				"left": "0",
 				"right": "0",
 
+				"margin": "0",
+
 				"max-width": "600px",
 				
 				"background": "#212121",
 				"color": "#e0e0e0",
+				"box-shadow": "none",
+				"border-radius": "0",
 				
 				"padding": ".8em",
 				
@@ -51,64 +71,34 @@ iqwerty.snackbar = (function() {
 				"cursor": "pointer"
 			}
 		},
-
+		
 		settings: {
-			duration: 12000 // 12 seconds
+			duration: 10000
 		}
 	};
 
-	var _snackbarStage = null;
-	function getSnackbarStage() {
-		return _snackbarStage;
-	};
-	function setSnackbarStage(snackbarStage) {
-		_snackbarStage = snackbarStage;
-	};
+	Snackbar.prototype.configureAction = function(text, cta, action, style) {
+		var snackbar = this;
 
-	Snackbar.prototype.mergeOptions = function(initialOptions, customOptions) {
-		var merged = customOptions;
-		for(var prop in initialOptions) {
-			if(merged.hasOwnProperty(prop)) {
-				if(initialOptions[prop] != null && initialOptions[prop].constructor == Object) {
-					merged[prop] = Toast.prototype.mergeOptions(initialOptions[prop], merged[prop]);
-				}
-			} else {
-				merged[prop] = initialOptions[prop];
-			}
-		}
-		return merged;
-	};
-
-	Snackbar.prototype.generate = function(text, cta, action, options) {
-		var snackbarStage = document.createElement("div");
-		Snackbar.prototype.stylize(snackbarStage, options.style.main);
-		snackbarStage.appendChild(document.createTextNode(text));
+		var out = document.createDocumentFragment();
+		out.appendChild(document.createTextNode(text));
 
 
-		var snackbarCTA = document.createElement("span");
-		Snackbar.prototype.stylize(snackbarCTA, options.style.cta);
-		snackbarCTA.appendChild(document.createTextNode(cta));
-		snackbarStage.appendChild(snackbarCTA);
-
-
-		document.body.insertBefore(snackbarStage, document.body.firstChild);
-
-
-		setSnackbarStage(snackbarStage);
-		snackbarStage = null;
-		snackbarCTA = null;
-	};
-
-	Snackbar.prototype.stylize = function(element, styles) {
-		Object.keys(styles).forEach(function(style) {
-			element.style[style] = styles[style];
+		var snackbarCTAStage = document.createElement("span");
+		Snackbar.prototype.stylize(snackbarCTAStage, style);
+		snackbarCTAStage.addEventListener("click", function() {
+			snackbar.hide();
+			snackbar = null;
+			action();
 		});
-	};
 
-	Snackbar.prototype.show = function(text, cta, action, options) {
-		Snackbar.prototype.generate(text, cta, action, options);
-	};
 
+		snackbarCTAStage.appendChild(document.createTextNode(cta));
+		out.appendChild(snackbarCTAStage);
+
+		return out;
+	};
+	
 	return {
 		Snackbar: Snackbar
 	};
