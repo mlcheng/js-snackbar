@@ -15,7 +15,8 @@ var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
 	function Snackbar(text, cta, action, options) {
-		options = Snackbar.prototype.mergeOptions(options, Snackbar.prototype.DEFAULT_SETTINGS);
+		var options = options == undefined ? {} : options;
+		options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, options);
 
 		/**
 		 * The text to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
@@ -27,6 +28,9 @@ iqwerty.snackbar = (function() {
 
 		// free the _text
 		_text = null;
+
+		// free the options
+		options = null;
 	};
 
 	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
