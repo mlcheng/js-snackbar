@@ -29,14 +29,6 @@ iqwerty.snackbar = (function() {
 		_text = null;
 	};
 
-	var _snackbarStage = null;
-	function getSnackbarStage() {
-		return _snackbarStage;
-	};
-	function setSnackbarStage(snackbarStage) {
-		_snackbarStage = snackbarStage;
-	};
-
 	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
 
 	Snackbar.prototype.DEFAULT_SETTINGS = {
