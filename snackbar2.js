@@ -15,19 +15,18 @@ var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
 	function Snackbar(text, cta, action, options) {
-		//options = Snackbar.prototype.mergeOptions(options, Snackbar.prototype.DEFAULT_SETTINGS);
-		//iqwerty.toast.Toast.call(this, text, options);
-		
-		if(getSnackbarStage() != null) {
-			Snackbar.prototype.toastQueue.push({text: text, cta: cta, action: action, options: options});
-		} else {
-			var options = options == undefined ? {} : options;
-			options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, options);
+		options = Snackbar.prototype.mergeOptions(options, Snackbar.prototype.DEFAULT_SETTINGS);
 
-			Snackbar.prototype.show(text, cta, action, options);
+		/**
+		 * The text to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
+		 * @type {String}
+		 */
+		var _text = Snackbar.prototype.configureAction(text, cta, action, options.style.cta);
+		iqwerty.toast.Toast.call(this, _text, options);
 
-			options = null;
-		}
+
+		// free the _text
+		_text = null;
 	};
 
 	var _snackbarStage = null;
@@ -37,8 +36,6 @@ iqwerty.snackbar = (function() {
 	function setSnackbarStage(snackbarStage) {
 		_snackbarStage = snackbarStage;
 	};
-
-	Snackbar.prototype.toastQueue = [];
 
 	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
 
@@ -80,8 +77,26 @@ iqwerty.snackbar = (function() {
 		}
 	};
 
-	Snackbar.prototype.show = function(text, options) {
-		console.log("Showing");
+	Snackbar.prototype.configureAction = function(text, cta, action, style) {
+		var snackbar = this;
+
+		var out = document.createDocumentFragment();
+		out.appendChild(document.createTextNode(text));
+
+
+		var snackbarCTAStage = document.createElement("span");
+		Snackbar.prototype.stylize(snackbarCTAStage, style);
+		snackbarCTAStage.addEventListener("click", function() {
+			snackbar.hide();
+			snackbar = null;
+			action();
+		});
+
+
+		snackbarCTAStage.appendChild(document.createTextNode(cta));
+		out.appendChild(snackbarCTAStage);
+
+		return out;
 	};
 	
 	return {
