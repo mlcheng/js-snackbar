@@ -7,7 +7,7 @@ This tiny JavaScript library shows a Snackbar notification on your page. Snackba
 A demo is available on my [playground](http://www.michaelcheng.us/playground/lib-js/snackbar/).
 
 ## Usage
-A simple Snackbar can be shown in one line
+A simple Snackbar can be shown in a few lines
 
 ```javascript
 iqwerty.snackbar.Snackbar("Please check your Internet connection", "Reload", function() {
@@ -18,7 +18,9 @@ iqwerty.snackbar.Snackbar("Please check your Internet connection", "Reload", fun
 The first parameter is the text to display on the Snackbar. The second parameter is the action text. Snackbars display an action to perform on the right hand side. The third parameter is the callback when the action text is clicked.
 
 ## Advanced customization
-The Snackbar has default settings in the Snackbar.prototype.DEFAULT_SETTINGS object. It contains `style`s for the `main` notification, as well as the `cta`, or the "call to action". The call to action is the text for the Snackbar action.
+The Snackbar has default settings in the `Snackbar.prototype.DEFAULT_SETTINGS` object. It contains `style`s for the `main` notification, as well as the `cta`, or the "call to action". The call to action is the text for the Snackbar action. Style names are the same as CSS properties.
+
+The default time that the Snackbar stays on-screen is 10 seconds.
 
 ```javascript
 {
@@ -44,6 +46,11 @@ var options = {
 		}
 	}
 };
+```
+
+Just remember to pass the `options` into the Snackbar.
+
+```javascript
 iqwerty.snackbar.Snackbar("Please check your Internet connection", "Reload", function() {
 	reload();
 }, options);
