@@ -15,22 +15,22 @@ var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
 	function Snackbar(text, cta, action, options) {
-		var options = options == undefined ? {} : options;
-		options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, options);
+		var _options = options || {};
+		_options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, _options);
 
 		/**
 		 * The text to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
 		 * @type {String}
 		 */
-		var _text = Snackbar.prototype.configureAction(text, cta, action, options.style.cta);
-		iqwerty.toast.Toast.call(this, _text, options);
+		var _text = Snackbar.prototype.configureAction(text, cta, action, _options.style.cta);
+		iqwerty.toast.Toast.call(this, _text, _options);
 
 
 		// free the _text
 		_text = null;
 
 		// free the options
-		options = null;
+		_options = null;
 	};
 
 	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
