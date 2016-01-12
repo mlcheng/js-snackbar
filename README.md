@@ -4,7 +4,7 @@ This tiny JavaScript library shows a Snackbar notification on your page. Snackba
 
 **The iQwerty [`toast.js`](https://github.com/mlcheng/js-toast) library is a required dependency for the Snackbar.**
 
-A demo is available on my [playground](http://www.michaelcheng.us/playground/lib-js/snackbar/).
+A demo is available on my [playground](https://www.michaelcheng.us/playground/lib-js/snackbar/).
 
 ## Usage
 A simple Snackbar can be shown in a few lines
