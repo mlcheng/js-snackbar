@@ -9,7 +9,7 @@
 
 ***********************************************/
 
-"use strict";
+'use strict';
 
 var iqwerty = iqwerty || {};
 
@@ -23,6 +23,7 @@ iqwerty.snackbar = (function() {
 		 * @type {String}
 		 */
 		var _text = Snackbar.prototype.configureAction(text, cta, action, _options.style.cta);
+		iqwerty.toast.Toast.prototype.Transitions = Snackbar.prototype.Transitions;
 		iqwerty.toast.Toast.call(this, _text, _options);
 
 
@@ -38,38 +39,54 @@ iqwerty.snackbar = (function() {
 	Snackbar.prototype.DEFAULT_SETTINGS = {
 		style: {
 			main: {
-				"position": "fixed",
-				"bottom": "0",
-				"left": "0",
-				"right": "0",
+				'position': 'fixed',
+				'left': '0',
+				'right': '0',
+				'bottom': '0',
 
-				"margin": "0",
+				'margin': '0',
 
-				"max-width": "600px",
+				'max-width': '600px',
 				
-				"background": "#212121",
-				"color": "#e0e0e0",
-				"box-shadow": "none",
-				"border-radius": "0",
+				'background': '#212121',
+				'color': '#e0e0e0',
+				'box-shadow': 'none',
+				'border-radius': '0',
 				
-				"padding": ".8em",
+				'padding': '.8em',
 				
-				"display": "flex",
-				"flex-flow": "row nowrap",
-				"justify-content": "space-between"
+				'display': 'flex',
+				'flex-flow': 'row nowrap',
+				'justify-content': 'space-between',
+				'text-align': 'left',
+				'opacity': '0',
+
+				'-webkit-transform': 'none',
+				'transform': 'none'
 			},
 
 			cta: {
-				"color": "#f48fb1",
-				"letter-spacing": "1px",
-				"text-transform": "uppercase",
-				"margin": "0 1em",
-				"cursor": "pointer"
+				'color': '#f48fb1',
+				'letter-spacing': '1px',
+				'text-transform': 'uppercase',
+				'margin': '0 1em',
+				'cursor': 'pointer'
 			}
 		},
 		
 		settings: {
 			duration: 10000
+		}
+	};
+
+	Snackbar.prototype.Transitions = {
+		SHOW: {
+			'transition': 'opacity ' + Snackbar.prototype.TOAST_ANIMATION_SPEED + 'ms',
+			'opacity': '1'
+		},
+
+		HIDE: {
+			'opacity': '0'
 		}
 	};
 
@@ -80,9 +97,9 @@ iqwerty.snackbar = (function() {
 		out.appendChild(document.createTextNode(text));
 
 
-		var snackbarCTAStage = document.createElement("span");
+		var snackbarCTAStage = document.createElement('span');
 		Snackbar.prototype.stylize(snackbarCTAStage, style);
-		snackbarCTAStage.addEventListener("click", function() {
+		snackbarCTAStage.addEventListener('click', function() {
 			snackbar.hide();
 			snackbar = null;
 			action();
