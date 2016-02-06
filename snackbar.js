@@ -32,7 +32,7 @@ iqwerty.snackbar = (function() {
 
 		// free the options
 		_options = null;
-	};
+	}
 
 	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
 
