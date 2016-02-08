@@ -15,10 +15,11 @@ var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
 
+	const SNACKBAR_ANIMATION_SPEED = 400;
 
 	const Transitions = {
 		SHOW: {
-			'transition': 'opacity ' + Snackbar.prototype.TOAST_ANIMATION_SPEED + 'ms',
+			'transition': 'opacity ' + SNACKBAR_ANIMATION_SPEED + 'ms',
 			'opacity': '1'
 		},
 
@@ -27,7 +28,7 @@ iqwerty.snackbar = (function() {
 		}
 	};
 
-	
+
 	function Snackbar(text, cta, action, options) {
 		var _options = options || {};
 		_options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, _options);
