@@ -14,6 +14,20 @@
 var iqwerty = iqwerty || {};
 
 iqwerty.snackbar = (function() {
+
+
+	const Transitions = {
+		SHOW: {
+			'transition': 'opacity ' + Snackbar.prototype.TOAST_ANIMATION_SPEED + 'ms',
+			'opacity': '1'
+		},
+
+		HIDE: {
+			'opacity': '0'
+		}
+	};
+
+	
 	function Snackbar(text, cta, action, options) {
 		var _options = options || {};
 		_options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, _options);
@@ -23,8 +37,7 @@ iqwerty.snackbar = (function() {
 		 * @type {String}
 		 */
 		var _text = Snackbar.prototype.configureAction(text, cta, action, _options.style.cta);
-		iqwerty.toast.Toast.prototype.Transitions = Snackbar.prototype.Transitions;
-		iqwerty.toast.Toast.call(this, _text, _options);
+		iqwerty.toast.Toast.call(this, _text, _options, Transitions);
 
 
 		// free the _text
@@ -76,17 +89,6 @@ iqwerty.snackbar = (function() {
 		
 		settings: {
 			duration: 10000
-		}
-	};
-
-	Snackbar.prototype.Transitions = {
-		SHOW: {
-			'transition': 'opacity ' + Snackbar.prototype.TOAST_ANIMATION_SPEED + 'ms',
-			'opacity': '1'
-		},
-
-		HIDE: {
-			'opacity': '0'
 		}
 	};
 
