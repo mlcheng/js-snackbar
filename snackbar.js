@@ -61,16 +61,17 @@ iqwerty.snackbar = (function() {
 				'margin': '0',
 
 				'max-width': '600px',
-				
+
 				'background': '#212121',
 				'color': '#e0e0e0',
 				'box-shadow': 'none',
 				'border-radius': '0',
-				
+
 				'padding': '.8em',
-				
+
 				'display': 'flex',
 				'flex-flow': 'row nowrap',
+				'align-items': 'center',
 				'justify-content': 'space-between',
 				'text-align': 'left',
 				'opacity': '0',
@@ -87,7 +88,7 @@ iqwerty.snackbar = (function() {
 				'cursor': 'pointer'
 			}
 		},
-		
+
 		settings: {
 			duration: 10000
 		}
@@ -114,7 +115,7 @@ iqwerty.snackbar = (function() {
 
 		return out;
 	};
-	
+
 	return {
 		Snackbar: Snackbar
 	};
