@@ -1,0 +1,10 @@
+{
+	"js": {
+		"bundle": [
+			{
+				"entry": "snackbar.js",
+				"export": "iqwerty"
+			}
+		]
+	}
+}

@@ -11,10 +11,13 @@
 
 'use strict';
 
-var iqwerty = iqwerty || {};
+import { mergeOptions, stylize, toast } from './../toast/toast';
 
-iqwerty.snackbar = (function() {
-
+export const snackbar = (() => {
+	/**
+	 * The Snackbar animation speed; how long the Toast takes to move to and from the screen
+	 * @type {number}
+	 */
 	const SNACKBAR_ANIMATION_SPEED = 400;
 
 	const Transitions = {
@@ -28,29 +31,7 @@ iqwerty.snackbar = (function() {
 		}
 	};
 
-
-	function Snackbar(text, cta, action, options) {
-		var _options = options || {};
-		_options = Snackbar.prototype.mergeOptions(Snackbar.prototype.DEFAULT_SETTINGS, _options);
-
-		/**
-		 * The text to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
-		 * @type {String}
-		 */
-		var _text = Snackbar.prototype.configureAction(text, cta, action, _options.style.cta);
-		iqwerty.toast.Toast.call(this, _text, _options, Transitions);
-
-
-		// free the _text
-		_text = null;
-
-		// free the options
-		_options = null;
-	}
-
-	Snackbar.prototype = Object.create(iqwerty.toast.Toast.prototype);
-
-	Snackbar.prototype.DEFAULT_SETTINGS = {
+	const DEFAULT_SETTINGS = {
 		style: {
 			main: {
 				'position': 'fixed',
@@ -90,33 +71,41 @@ iqwerty.snackbar = (function() {
 		},
 
 		settings: {
-			duration: 10000
-		}
+			duration: 10000,
+		},
 	};
 
-	Snackbar.prototype.configureAction = function(text, cta, action, style) {
-		var snackbar = this;
+	let snackbarInstance;
 
-		var out = document.createDocumentFragment();
+	function snackbar(text, cta, action, options) {
+		let _options = options || {};
+		_options = mergeOptions(DEFAULT_SETTINGS, _options);
+
+		/**
+		 * The DocumentFragment to show in the Snackbar. This includes the call to action (cta) and its corresponding action.
+		 * @type {DocumentFragment}
+		 */
+		const _text = configureAction(text, cta, action, _options.style.cta);
+		snackbarInstance = toast.toast(_text, _options, Transitions);
+		return snackbarInstance;
+	}
+
+	function configureAction(text, cta, action, style) {
+		const out = document.createDocumentFragment();
 		out.appendChild(document.createTextNode(text));
 
-
-		var snackbarCTAStage = document.createElement('span');
-		Snackbar.prototype.stylize(snackbarCTAStage, style);
-		snackbarCTAStage.addEventListener('click', function() {
-			snackbar.hide();
-			snackbar = null;
-			action();
+		const snackbarCTAStage = document.createElement('span');
+		stylize(snackbarCTAStage, style);
+		snackbarCTAStage.addEventListener('click', () => {
+			snackbarInstance.hide();
+			if(action) action();
 		});
-
 
 		snackbarCTAStage.appendChild(document.createTextNode(cta));
 		out.appendChild(snackbarCTAStage);
 
 		return out;
-	};
+	}
 
-	return {
-		Snackbar: Snackbar
-	};
+	return { snackbar };
 })();
